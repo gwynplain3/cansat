@@ -151,6 +151,17 @@
     socket.on("connect", () => (connected = true));
     socket.on("disconnect", () => (connected = false));
     socket.on("flight-data", processPacket);
+    socket.on("flight-history", (history) => {
+      if (history.length === 0) return;
+      
+      altHistory = history.map(p => parseFloat(p.alt) || 0);
+      timeLabels = history.map(p => `T+${Math.floor(p.time / 1000)}s`);
+      updateChart();
+      
+      // Update ui counters with the latest valid packet
+      const latestPacket = history[history.length - 1];
+      processPacket(latestPacket);
+    });
   });
 
   onDestroy(() => {
@@ -178,7 +189,7 @@
         </svg>
       </div>
       <div class="logo-text">
-        <span class="logo-title">Team RWB</span>
+        <span class="logo-title">TEAM ANTIGRAVITY</span>
         <span class="logo-sub">CanSat Mission Control</span>
       </div>
     </div>
@@ -227,6 +238,9 @@
           {$smoothRSSI.toFixed(0)}
         </div>
         <div class="stat-unit">dBm</div>
+        <div style="font-size: 11px; color: {rssiColor}; font-weight: 700; margin-top: 6px; letter-spacing: 1px;">
+          STRENGTH: {Math.round(rssiPercent)}%
+        </div>
         <div class="rssi-bar-bg">
           <div
             class="rssi-bar-fill"
