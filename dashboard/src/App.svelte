@@ -189,7 +189,7 @@
         </svg>
       </div>
       <div class="logo-text">
-        <span class="logo-title">TEAM ANTIGRAVITY</span>
+        <span class="logo-title">TEAM</span>
         <span class="logo-sub">CanSat Mission Control</span>
       </div>
     </div>
